@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Interestelar</title>
+<style>
+body {
+  font-family: sans-serif;
+}
+table {
+  width: 75%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+td {
+  padding: 10px;
+  text-align: center;
+}
+img {
+  max-width: 150px;
+  cursor: pointer;
+}
+iframe {
+  width: 20%; 
+  height: 200px; 
+  margin: 20px auto;
+  border: 1px solid #ccc;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<h1 style="text-align: center;">Interestelar</h1>
+
+<table>
+  <tr>
+    <td><img src="https://image.benq.com/is/image/benqco/T7-1200X600?$ResponsivePreset$" ></td>
+    <td><img src="https://i0.wp.com/freshfiction.tv/wp-content/uploads/2017/12/3520.jpg?w=1280&ssl=1" ></td>
+    <td><img src="https://wallpapers.com/images/featured/interstellar-d5hpgadclxszmpeh.webp" ></td>
+    <td><img src="https://wallpapers.com/images/hd/interstellar-plane-on-bookshelf-w3fgx1maofi281hb.webp" ></td>
+  </tr>
+</table>
+
+<iframe id="miIframe"></iframe>
+
+<script>
+  const imagenes = document.querySelectorAll('img');
+  const iframe = document.getElementById('miIframe');
+
+  imagenes.forEach(imagen => {
+    imagen.addEventListener('click', () => {
+      iframe.src = imagen.src;
+    });
+  });
+</script>
+<footer>
+  <a href="index.html" class="boton">Haz clic aquí para regresar a la pagina principal</a>
+</footer>
+</body>
+</html>

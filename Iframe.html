@@ -34,25 +34,20 @@ iframe {
 
 <table>
   <tr>
-    <td><img src="https://image.benq.com/is/image/benqco/T7-1200X600?$ResponsivePreset$" ></td>
-    <td><img src="https://i0.wp.com/freshfiction.tv/wp-content/uploads/2017/12/3520.jpg?w=1280&ssl=1" ></td>
-    <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEfrzkGSNp3UyNnHN2WIn5BnqUX6GKJKVgFw&s" ></td>
-    <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMvR21AFo2O-8PadtWTxelOu2TaNTcE3x7Nw&s" ></td>
+    <td><a href="https://image.benq.com/is/image/benqco/T7-1200X600?$ResponsivePreset$" target="miIframe">
+      <img src="https://image.benq.com/is/image/benqco/T7-1200X600?$ResponsivePreset$" ></td>
+    <td><a href="https://i0.wp.com/freshfiction.tv/wp-content/uploads/2017/12/3520.jpg?w=1280&ssl=1" target="miIframe">
+      <img src="https://i0.wp.com/freshfiction.tv/wp-content/uploads/2017/12/3520.jpg?w=1280&ssl=1" ></td>
+    <td><a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEfrzkGSNp3UyNnHN2WIn5BnqUX6GKJKVgFw&s" target="miIframe">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEfrzkGSNp3UyNnHN2WIn5BnqUX6GKJKVgFw&s" ></td>
+    <td><a href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMvR21AFo2O-8PadtWTxelOu2TaNTcE3x7Nw&s" target="miIframe">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMvR21AFo2O-8PadtWTxelOu2TaNTcE3x7Nw&s" ></td>
   </tr>
 </table>
 
-<iframe id="miIframe"></iframe>
+<iframe id="miIframe" name="miIframe"></iframe>
 
-<script>
-  const imagenes = document.querySelectorAll('img');
-  const iframe = document.getElementById('miIframe');
 
-  imagenes.forEach(imagen => {
-    imagen.addEventListener('click', () => {
-      iframe.src = imagen.src;
-    });
-  });
-</script>
 <footer>
   <a href="index.html" class="boton">Haz clic aquí para regresar a la pagina principals</a>
 </footer>

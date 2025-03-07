@@ -1,0 +1,29 @@
+body{
+	background-color: skyblue;
+
+}
+table{
+	width: 100%;
+	border: 1px solid gray;
+	border-collapse: collapse;
+	caption-side: top;
+}
+th, td{
+	border: 1px solid gray;
+
+}
+table tr th{
+	background-color:black ;
+	color: white;
+}
+table tr:nth-child(odd){
+	background-color: lightgreen;
+
+}
+table tr:nth-child(even){
+	background-color:lightpink ;
+}
+table tr:hover{
+	background-color: purple;
+	color: white;
+}

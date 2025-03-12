@@ -1,0 +1,59 @@
+ .capa1{
+ 	margin-left: 25%;
+ 	padding: 12px;
+}
+
+ul{
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+	width: 20%;
+	height: 100%;
+	background-color: lightgreen;
+	position: fixed;
+}
+
+li a{
+	background-color: lightgreen;
+	color: white;
+	display: block;
+	padding: 16px;
+	text-decoration: none;
+}
+
+li a:hover {
+background-color: green;
+}
+
+li .activo{
+	background-color: skyblue;
+	color: white;
+}
+li .activo:hover{
+	background-color: blue;
+}
+h1{
+	 font-family: "Playwrite HU", cursive;
+
+}
+h2{
+	  font-family: "Playwrite HU", cursive;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+@font-face{
+	font-family: "lobster";
+	src: url("Lobster-Regular.ttf") format("truetype");
+}
+
+p{
+	font-family: "lobster";
+	font-size: 18px;
+	text-align: justify;
+}
+.t2{
+	font-family: "lobster";
+	text-align: center;
+
+}

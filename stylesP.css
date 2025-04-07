@@ -8,12 +8,16 @@ body {
 header {
     background-color: #111;
     padding: 20px;
+    width: 100%; /* Asegura que el header ocupe todo el ancho */
+    box-sizing: border-box;
 }
 
 nav {
     display: flex;
     justify-content: space-evenly;
-
+    width: 100%; /* Asegura que la navegación ocupe todo el ancho */
+    box-sizing: border-box;
+    padding: 10px 0; /* Añade un poco de espacio vertical */
 }
 
 nav button {
@@ -21,15 +25,27 @@ nav button {
     border: none;
     color: white;
     padding: 10px 20px;
-    margin: 0 10px;
+    margin: 0; /* Elimina el margen horizontal para mejor distribución */
     cursor: pointer;
     font-size: 16px;
-}
-nav button:hover{
-    background-color: skyblue;
-    border-radius: 15px;
+    flex-grow: 1; /* Permite que los botones se expandan para llenar el espacio */
+    text-align: center; /* Centra el texto dentro de los botones */
+    text-decoration: none;
 }
 
+nav button:hover {
+    background-color: skyblue;
+    border-radius: 15px;
+    text-decoration: none;
+}
+
+.active a {
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    margin: 0;
+    border-radius: 5px;
+}
 
 
 .hero {
@@ -89,7 +105,7 @@ nav button:hover{
 }
 .content-section h3, p, ul{
     font-size: 2em;
-    text-align: justify;
+    text-align: left;
 }
 
 h2,h1{

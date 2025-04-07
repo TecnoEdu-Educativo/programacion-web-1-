@@ -1,0 +1,93 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: arial;
+}
+
+body{
+  /* Degradado de colores de Minecraft (ejemplos: verde pasto, marrón tierra, gris piedra, azul cielo) */
+  background: linear-gradient(to bottom, #a7d129, #795548, #9e9e9e, #87ceeb);
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Para que el degradado cubra toda la página */
+}
+
+h1,h2{
+  text-align:center;
+  margin: .5% 0;
+}
+
+.galeria{
+  width:100%;
+  height: 30vh;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.galeria img{
+  width: 90%;
+  height: 100%;
+  margin: 0%;
+  border-radius: 10px;
+  border:3px solid blue;
+}
+
+header{
+  margin: 10% 0;
+}
+
+#mostrar{
+  position: relative;
+  z-index: 1;
+  background-color: #339cff;
+  width: 98%;
+  height: 50px;
+  border-radius: 10px;
+}
+#mostrar1 {
+  position: relative; 
+  z-index: 1;
+  background-color: #339cff;
+  width: auto; 
+  height: 30px;
+  border-radius: 20px;
+  text-decoration: none;
+  left: 50%; 
+  top: 60px; 
+  transform: translateX(-50%); 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px; 
+}
+#mostrar1 a{
+  text-decoration: none;
+}
+
+
+label{
+  position: absolute;
+  z-index: 1;
+}
+
+.button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin:0 0 2% 40% ;
+  width: 18%;
+  height: 50px;
+}
+
+#mostrar:hover{
+  background-color: white;
+  width: 100%;
+}
+
+#mostrar:hover ~ label{
+  color: #335bff;
+}
+
+.button:hover ~ .galeria img {
+  display: none;
+}

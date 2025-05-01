@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="formularios2.css">
+	<title>Obtener Datos del Formulario con JavaScript</title>
+	<script type="text/javascript" src="formularios2.js"></script>
+</head>
+<body>
+	<form name="form">
+		<label>Usuario</label><br>
+		<input type="text" name="user" id="user"><br>
+		<label>Contraseña</label><br>
+		<input type="password" name="pass" id="pass"><br>
+		<label>Carrera:</label><br>
+		<select name="carrera" id="carrera">
+			<option>Ing. Tec. Informacion</option>
+			<option>Ing. Telematica</option>
+		</select><br>
+		<label>Género</label><br>
+		<input type="radio" name="gen" id="gen" value="M">
+		<label>Masculino</label><br>
+		<input type="radio" name="gen" id="gen" value="F">
+		<label>Femenino</label><br>
+		<input type="checkbox" name="casilla" id="casilla">
+		<label>Acepta los terminos y condicines de uso</label><br>
+		<input type="button" name="enviar" id="enviar" value="Leer datos" onclick="leer()">
+	</form><br>
+	<div id="res"></div>
+
+</body>
+</html>

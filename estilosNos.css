@@ -108,10 +108,10 @@ main {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px; 
-    height: 40px; 
-    background-color: #333; 
-    border-radius: 50%; 
+    width: 40px;
+    height: 40px;
+    background-color: #333;
+    border-radius: 50%;
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
@@ -137,11 +137,13 @@ main {
     height: 300px; /* Adjust height as needed */
     border-radius: 8px;
 }
+
 .content-section {
     background-color: #111;
     padding: 40px;
     text-align: center;
 }
+
 .content-section:hover{
     background-color: gray;
     padding: 40px;
@@ -156,8 +158,56 @@ h2{
     font-family: titulo2 ;
     color: #efb810;
 }
+
 @font-face{
     font-family: titulo2 ;
     src: url(Fuentes/Sanchez-Regular.ttf);
+}
 
+
+form {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #111;
+    border-radius: 8px;
+}
+
+form div {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #333;
+    color: #fff;
+}
+
+textarea {
+    resize: vertical; \
+}
+
+button[type="submit"] {
+    background-color: skyblue;
+    color: #000;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button[type="submit"]:hover {
+    background-color: #fff;
 }

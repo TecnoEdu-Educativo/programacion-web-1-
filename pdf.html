@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico Interstellar</title>
+    <link rel="stylesheet" href="pdf.css">
+    <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-ui-1.8.17.custom.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages': ['corechart']});
+        google.charts.setOnLoadCallback(function() {});
+
+        // Variables globales para almacenar resultados
+        let resultadosPorPregunta = [];
+        let calificacion = 0;
+
+        function generarGrafica(resultadosPorPregunta) {
+            const data = new google.visualization.DataTable();
+            data.addColumn('string', 'Pregunta');
+            data.addColumn('number', 'Puntos');
+            data.addRows(resultadosPorPregunta);
+
+            const options = {
+                title: 'Rendimiento por Pregunta',
+                hAxis: {
+                    title: 'Pregunta',
+                },
+                vAxis: {
+                    title: 'Puntos (1 = Correcta, 0 = Incorrecta)',
+                    minValue: 0,
+                    maxValue: 1,
+                    ticks: [0, 1]
+                },
+                colors: ['#4285F4'],
+                width: 500,
+                height: 300
+            };
+
+            const chart = new google.visualization.ColumnChart(document.getElementById('barras'));
+            chart.draw(data, options);
+            
+            // Devolver el elemento del gráfico para poder capturarlo luego
+            return document.getElementById('barras');
+        }
+
+        function evaluarRespuestas() {
+            const respuestasCorrectas = {
+                pregunta1: "endurance",
+                pregunta2: "miller",
+                pregunta3: "un robot",
+                pregunta4: "un agujero de gusano",
+                pregunta5: "murphy",
+                pregunta6: "agujero de gusano",
+                pregunta7: "miller",
+                pregunta8: "un constructo tetradimensional",
+                pregunta9: "matthew mcconaughey",
+                pregunta10: "datos gravitacionales"
+            };
+
+            calificacion = 0;
+            resultadosPorPregunta = [];
+
+            for (const pregunta in respuestasCorrectas) {
+                const numeroPregunta = pregunta.replace("pregunta", "");
+                const respuestaUsuario = document.getElementById(pregunta).value.toLowerCase().trim();
+                const esCorrecta = respuestaUsuario === respuestasCorrectas[pregunta];
+                if (esCorrecta) {
+                    calificacion++;
+                    resultadosPorPregunta.push([`Pregunta ${numeroPregunta}`, 1]);
+                } else {
+                    resultadosPorPregunta.push([`Pregunta ${numeroPregunta}`, 0]);
+                }
+            }
+
+            document.getElementById("calificacion").textContent = calificacion + " / 10";
+            document.getElementById("resultado").classList.remove("oculto");
+
+            generarGrafica(resultadosPorPregunta);
+        }
+
+        const { jsPDF } = window.jspdf;
+        
+        function validarFormulario() {
+            const nombre = document.getElementById('user').value;
+            if (nombre.trim() === '') {
+                alert('Por favor ingresa tu nombre');
+                return false;
+            }
+            return true;
+        }
+        
+        async function generarPDF() {
+            if (!validarFormulario()) {
+                return; 
+            }
+            
+            try {
+                // Crear el PDF
+                const doc = new jsPDF('p', 'mm', 'a4');
+                
+                // Configuración inicial
+                doc.setFontSize(26);
+                doc.setTextColor(100, 150, 0);
+                doc.text(30, 30, "¡Gracias por completar el formulario!");
+                
+                doc.setFontSize(16);
+                doc.setTextColor(0, 0, 0);
+                doc.text(30, 50, "Este es tu reconocimiento.");
+                
+                // Obtener datos del formulario
+                const nombre = document.getElementById('user').value;
+                const edad = document.getElementById('edad').value;
+                
+                // Agregar datos al PDF
+                doc.setFontSize(14);
+                doc.text(30, 70, `Nombre: ${nombre}`);
+                doc.text(30, 80, `Edad: ${edad}`);
+                doc.text(30, 90, `Calificación: ${calificacion}/10`);
+                
+                // Agregar fecha
+                const fecha = new Date().toLocaleDateString();
+                doc.text(30, 110, `Fecha: ${fecha}`);
+                
+                // Capturar el gráfico como imagen
+                const chartElement = document.getElementById('barras');
+                
+                // Usar html2canvas para capturar el gráfico
+                const canvas = await html2canvas(chartElement, {
+                    scale: 2,
+                    logging: false,
+                    useCORS: true
+                });
+                
+                // Añadir la imagen del gráfico al PDF
+                const imgData = canvas.toDataURL('image/png');
+                doc.addImage(imgData, 'PNG', 30, 130, 150, 90);
+                
+                // Agregar firma al final
+                doc.text(30, 240, "Firma: _________________________");
+                
+                // Guardar el PDF
+                doc.save(`Reconocimiento_Interstellar_${nombre.replace(' ', '_')}.pdf`);
+                
+                // Mostrar mensaje de éxito
+                alert('PDF generado con éxito. Se descargará automáticamente.');
+            } catch (error) {
+                console.error("Error al generar PDF:", error);
+                alert('Hubo un error al generar el PDF. Por favor intenta nuevamente.');
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>¿Qué tanto sabes de Interstellar?</h1>
+        <form id="formulario-interstellar">
+            <div class="pregunta">
+                <label>Nombre Completo</label><br>
+                <input type="text" id="user" name="user" required>
+            </div>
+
+            <div class="pregunta">
+                <label>Edad</label><br>
+                <input type="text" id="edad" name="edad" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta1">1. ¿Cuál es el nombre de la nave espacial que lleva a los protagonistas en su misión?</label>
+                <input type="text" id="pregunta1" name="pregunta1" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta2">2. ¿Cuál es el nombre del planeta donde el tiempo pasa mucho más rápido debido a la gravedad?</label>
+                <input type="text" id="pregunta2" name="pregunta2" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta3">3. ¿Qué tipo de entidad ayuda a Cooper en el teseracto?</label>
+                <input type="text" id="pregunta3" name="pregunta3" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta4">4. ¿Qué fenómeno astrofísico utilizan para viajar a través del espacio?</label>
+                <input type="text" id="pregunta4" name="pregunta4" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta5">5. ¿Cuál es el nombre de la hija de Cooper?</label>
+                <input type="text" id="pregunta5" name="pregunta5" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta6">6. ¿Qué les permite a los personajes viajar a distancias interestelares en un tiempo relativamente corto?</label>
+                <input type="text" id="pregunta6" name="pregunta6" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta7">7. ¿Cuál es el nombre del planeta oceánico con enormes mareas debido a la proximidad de un agujero negro?</label>
+                <input type="text" id="pregunta7" name="pregunta7" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta8">8. ¿Qué representa el teseracto en la película?</label>
+                <input type="text" id="pregunta8" name="pregunta8" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta9">9. ¿Quién interpreta a Cooper?</label>
+                <input type="text" id="pregunta9" name="pregunta9" required>
+            </div>
+
+            <div class="pregunta">
+                <label for="pregunta10">10. ¿Cuál es el mensaje clave que Cooper intenta transmitir a Murph a través del teseracto?</label>
+                <input type="text" id="pregunta10" name="pregunta10" required>
+            </div>
+
+            <button type="button" onclick="evaluarRespuestas()">Enviar y obtener reconocimiento</button>
+        </form>
+
+        <div id="resultado" class="oculto">
+            <h2>¡Felicidades!</h2>
+            <p>Has completado el diagnóstico.</p>
+            <p>Tu calificación: <span id="calificacion"></span></p>
+            <div id="barras" style="width: 500px; height: 300px; margin: 20px auto;"></div>
+            <button type="button" onclick="generarPDF()">Descargar Reconocimiento (PDF)</button>
+        </div>
+    </div>
+</body>
+</html>

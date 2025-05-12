@@ -59,46 +59,46 @@
         alert('PDF generado con éxito. Se descargará automáticamente.');
     }
 
-    // Funciones para el blog
+    // Funciones para el blog con almacenamiento en localStorage
     document.addEventListener('DOMContentLoaded', function() {
+        // Cargar preguntas existentes al iniciar
+        cargarPreguntas();
+        
         // Publicar nueva pregunta
         document.getElementById('preguntaForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const nombre = document.getElementById('nombre').value.trim();
             const pregunta = document.getElementById('pregunta').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const categoria = document.getElementById('categoria').value;
+            const categoriaTexto = document.getElementById('categoria').options[document.getElementById('categoria').selectedIndex].text;
             
             if (nombre === '' || pregunta === '') {
                 alert('Por favor completa los campos obligatorios');
                 return;
             }
             
-            const blogPosts = document.querySelector('.blog-posts');
-            const newPost = document.createElement('article');
-            newPost.className = 'blog-post unanswered';
-            newPost.innerHTML = `
-                <div class="post-header">
-                    <h4>${pregunta}</h4>
-                    <span class="post-meta">Publicado por: ${nombre} | ${new Date().toLocaleDateString()} | Categoría: ${document.getElementById('categoria').options[document.getElementById('categoria').selectedIndex].text}</span>
-                </div>
-                <div class="post-content">
-                    <p>${pregunta}</p>
-                    <div class="no-answer">Esta pregunta aún no tiene respuesta. ¡Sé el primero en responder!</div>
-                    <div class="respuesta-form" style="display: none;">
-                        <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
-                        <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
-                        <button class="enviar-respuesta">Enviar respuesta</button>
-                    </div>
-                    <button class="responder-btn">Responder</button>
-                </div>
-            `;
+            const nuevaPregunta = {
+                id: Date.now(),
+                pregunta: pregunta,
+                nombre: nombre,
+                email: email,
+                categoria: categoria,
+                categoriaTexto: categoriaTexto,
+                fecha: new Date().toLocaleDateString(),
+                respuestas: [],
+                respondida: false
+            };
             
-            blogPosts.insertBefore(newPost, blogPosts.firstChild.nextSibling);
+            // Guardar en localStorage
+            guardarPregunta(nuevaPregunta);
+            
+            // Mostrar en la página
+            mostrarPregunta(nuevaPregunta);
+            
             document.getElementById('preguntaForm').reset();
             alert('Tu pregunta ha sido publicada. ¡Gracias por participar!');
-            setTimeout(() => {
-                newPost.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
         });
 
         // Delegación de eventos para los botones de responder
@@ -116,18 +116,29 @@
                 const post = e.target.closest('.blog-post');
                 const respuestaText = post.querySelector('.respuesta-text').value.trim();
                 const respuestaNombre = post.querySelector('.respuesta-nombre').value.trim();
+                const preguntaId = parseInt(post.dataset.id);
                 
                 if (respuestaText === '' || respuestaNombre === '') {
                     alert('Por favor completa todos los campos para responder');
                     return;
                 }
                 
+                const nuevaRespuesta = {
+                    texto: respuestaText,
+                    nombre: respuestaNombre,
+                    fecha: new Date().toLocaleDateString()
+                };
+                
+                // Guardar respuesta en localStorage
+                guardarRespuesta(preguntaId, nuevaRespuesta);
+                
+                // Actualizar visualización
                 const respuestaDiv = document.createElement('div');
                 respuestaDiv.className = 'post-answer';
                 respuestaDiv.innerHTML = `
                     <h5>Respuesta:</h5>
                     <p>${respuestaText}</p>
-                    <span class="answer-meta">Respondido por: ${respuestaNombre} | ${new Date().toLocaleDateString()}</span>
+                    <span class="answer-meta">Respondido por: ${respuestaNombre} | ${nuevaRespuesta.fecha}</span>
                 `;
                 
                 post.querySelector('.post-content').insertBefore(respuestaDiv, post.querySelector('.respuesta-form'));
@@ -143,6 +154,69 @@
                 alert('¡Gracias por tu respuesta!');
             }
         });
+        
+        // Función para cargar preguntas al iniciar
+        function cargarPreguntas() {
+            const preguntas = JSON.parse(localStorage.getItem('blogPreguntas')) || [];
+            preguntas.forEach(pregunta => {
+                mostrarPregunta(pregunta);
+            });
+        }
+        
+        // Función para mostrar una pregunta en la página
+        function mostrarPregunta(pregunta) {
+            const blogPosts = document.querySelector('.blog-posts');
+            const newPost = document.createElement('article');
+            newPost.className = `blog-post ${pregunta.respondida ? '' : 'unanswered'}`;
+            newPost.dataset.id = pregunta.id;
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <h4>${pregunta.pregunta}</h4>
+                    <span class="post-meta">Publicado por: ${pregunta.nombre} | ${pregunta.fecha} | Categoría: ${pregunta.categoriaTexto}</span>
+                </div>
+                <div class="post-content">
+                    <p>${pregunta.pregunta}</p>
+                    ${pregunta.respondida ? '' : '<div class="no-answer">Esta pregunta aún no tiene respuesta. ¡Sé el primero en responder!</div>'}
+                    ${pregunta.respuestas.map(respuesta => `
+                        <div class="post-answer">
+                            <h5>Respuesta:</h5>
+                            <p>${respuesta.texto}</p>
+                            <span class="answer-meta">Respondido por: ${respuesta.nombre} | ${respuesta.fecha}</span>
+                        </div>
+                    `).join('')}
+                    <div class="respuesta-form" style="display: none;">
+                        <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
+                        <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
+                        <button class="enviar-respuesta">Enviar respuesta</button>
+                    </div>
+                    <button class="responder-btn">Responder</button>
+                </div>
+            `;
+            
+            blogPosts.insertBefore(newPost, blogPosts.firstChild.nextSibling);
+            setTimeout(() => {
+                newPost.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+        
+        // Función para guardar una nueva pregunta
+        function guardarPregunta(pregunta) {
+            const preguntas = JSON.parse(localStorage.getItem('blogPreguntas')) || [];
+            preguntas.unshift(pregunta); // Agregar al inicio
+            localStorage.setItem('blogPreguntas', JSON.stringify(preguntas));
+        }
+        
+        // Función para guardar una respuesta
+        function guardarRespuesta(preguntaId, respuesta) {
+            const preguntas = JSON.parse(localStorage.getItem('blogPreguntas')) || [];
+            const preguntaIndex = preguntas.findIndex(p => p.id === preguntaId);
+            
+            if (preguntaIndex !== -1) {
+                preguntas[preguntaIndex].respuestas.push(respuesta);
+                preguntas[preguntaIndex].respondida = true;
+                localStorage.setItem('blogPreguntas', JSON.stringify(preguntas));
+            }
+        }
     });
     </script>
 </head>
@@ -230,47 +304,7 @@
                 
                 <div class="blog-posts">
                     <h3>Últimas preguntas</h3>
-                    
-                    <article class="blog-post">
-                        <div class="post-header">
-                            <h4>¿Cuál fue la primera película en ganar el Óscar a Mejor Película?</h4>
-                            <span class="post-meta">Publicado por: Carlos M. | 15 Mayo 2025 | Categoría: Historia del cine</span>
-                        </div>
-                        <div class="post-content">
-                            <p>Estoy investigando sobre los inicios de los Premios Óscar y me gustaría saber cuál fue la primera película galardonada.</p>
-                            
-                            <div class="post-answer">
-                                <h5>Respuesta:</h5>
-                                <p>La primera película en ganar el Óscar a Mejor Película fue "Wings" (Alas), en la primera ceremonia de los Premios de la Academia en 1929. Curiosamente, en esa primera edición hubo dos premios principales: "Mejor Película" (que ganó "Wings") y "Mejor Producción Artística" (que ganó "Amanecer").</p>
-                                <span class="answer-meta">Respondido por: Equipo de CineÓscar | 16 Mayo 2025</span>
-                            </div>
-                            
-                            <div class="respuesta-form" style="display: none;">
-                                <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
-                                <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
-                                <button class="enviar-respuesta">Enviar respuesta</button>
-                            </div>
-                            <button class="responder-btn">Responder</button>
-                        </div>
-                    </article>
-                    
-                    <article class="blog-post unanswered">
-                        <div class="post-header">
-                            <h4>¿Por qué "Citizen Kane" no ganó el Óscar a Mejor Película?</h4>
-                            <span class="post-meta">Publicado por: Luis G. | 8 Mayo 2025 | Categoría: Historia del cine</span>
-                        </div>
-                        <div class="post-content">
-                            <p>Considerada por muchos como la mejor película de la historia, ¿por qué no ganó el premio principal?</p>
-                            <div class="no-answer">Esta pregunta aún no tiene respuesta. ¡Sé el primero en responder!</div>
-                            
-                            <div class="respuesta-form" style="display: none;">
-                                <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
-                                <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
-                                <button class="enviar-respuesta">Enviar respuesta</button>
-                            </div>
-                            <button class="responder-btn">Responder</button>
-                        </div>
-                    </article>
+                    <!-- Las preguntas se cargarán dinámicamente desde localStorage -->
                 </div>
             </section>
 

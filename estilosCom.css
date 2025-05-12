@@ -361,6 +361,223 @@ nav button:hover {
     color: #ddd;
 }
 
+/* ************************ Estilos para el Blog ************************ */
+.blog-container {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    border: 1px solid #333;
+}
+
+.blog-container h2 {
+    color: #00bcd4;
+    text-align: center;
+    margin-bottom: 1.5em;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.blog-container h2::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: skyblue;
+    margin: 10px auto 0;
+}
+
+.blog-post-form {
+    background-color: #252525;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #00bcd4;
+}
+
+.blog-post-form h3 {
+    color: #eee;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+.blog-post-form label {
+    display: block;
+    margin-bottom: 0.5em;
+    color: #ddd;
+    font-weight: 500;
+}
+
+.blog-post-form input[type="text"],
+.blog-post-form input[type="email"],
+.blog-post-form textarea,
+.blog-post-form select {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 1.5em;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #2a2a2a;
+    color: white;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.blog-post-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.blog-post-form button {
+    background: linear-gradient(135deg, skyblue, #00bcd4);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.blog-post-form button:hover {
+    background: linear-gradient(135deg, #00bcd4, skyblue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.blog-posts h3 {
+    color: #eee;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+    margin-bottom: 1.5em;
+}
+
+.blog-post {
+    background-color: #252525;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 4px solid skyblue;
+    transition: all 0.3s ease;
+}
+
+.blog-post.unanswered {
+    border-left-color: #ff6b6b;
+}
+
+.blog-post:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.post-header h4 {
+    color: #00bcd4;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.post-meta {
+    color: #aaa;
+    font-size: 0.85em;
+    display: block;
+    margin-bottom: 1em;
+}
+
+.post-content p {
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 1em;
+}
+
+.post-answer {
+    background-color: #1e1e1e;
+    padding: 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+    border-left: 3px solid #4CAF50;
+}
+
+.post-answer h5 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}
+
+.answer-meta {
+    color: #888;
+    font-size: 0.85em;
+    display: block;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.no-answer {
+    color: #ff6b6b;
+    font-style: italic;
+    padding: 10px;
+    background-color: rgba(255, 107, 107, 0.1);
+    border-radius: 4px;
+    margin-top: 10px;
+}
+/* Estilos para formulario de respuestas */
+.respuesta-form {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #2a2a2a;
+    border-radius: 6px;
+    border-left: 3px solid #00bcd4;
+}
+
+.respuesta-form textarea,
+.respuesta-form input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+}
+
+.respuesta-form textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.enviar-respuesta {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.enviar-respuesta:hover {
+    background-color: #45a049;
+}
+
+.responder-btn {
+    background-color: #00bcd4;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.responder-btn:hover {
+    background-color: #0097a7;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .cuestionario-container {
@@ -375,6 +592,14 @@ nav button:hover {
         display: block;
         margin-right: 0;
         margin-bottom: 8px;
+    }
+
+    .blog-container {
+        padding: 20px 15px;
+    }
+    
+    .blog-post {
+        padding: 15px;
     }
 }
 .content-section {
@@ -392,3 +617,4 @@ nav button:hover {
     font-size: 2em;
     color: #efb810;
 }
+

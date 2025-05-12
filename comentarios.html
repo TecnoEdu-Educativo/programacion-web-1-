@@ -8,19 +8,17 @@
     <script type="text/javascript" src="js/jquery/jquery-1.7.1.min.js"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script type="text/javascript" src="comentarios.js"></script>
+    
     <script type="text/javascript">
     const { jsPDF } = window.jspdf;
     
     function validarFormulario() {
-        // Validación del nombre
         const nombre = document.getElementById('user').value;
         if (nombre.trim() === '') {
             alert('Por favor ingresa tu nombre');
             return false;
         }
         
-        // Validación de género
         const genero = document.querySelector('input[name="genero"]:checked');
         if (!genero) {
             alert('Por favor selecciona tu género');
@@ -35,42 +33,117 @@
             return; 
         }
         
-        // Resto del código de generarPDF...
-        // Crear nuevo documento PDF
         const doc = new jsPDF();
-        
-        // Configuración inicial
         doc.setFontSize(26);
         doc.setTextColor(100, 150, 0);
         doc.text(30, 30, "¡Gracias por completar el formulario!");
             
-            doc.setFontSize(16);
-            doc.setTextColor(0, 0, 0);
-            doc.text(30, 50, "Este es tu reconocimiento.");
+        doc.setFontSize(16);
+        doc.setTextColor(0, 0, 0);
+        doc.text(30, 50, "Este es tu reconocimiento.");
             
-            // Obtener datos del formulario
-            const nombre = document.getElementById('user').value;
-            const edad = document.getElementById('edad').value;
-            const genero = document.querySelector('input[name="genero"]:checked').value === 'f' ? 'Femenino' : 'Masculino';
+        const nombre = document.getElementById('user').value;
+        const edad = document.getElementById('edad').value;
+        const genero = document.querySelector('input[name="genero"]:checked').value === 'f' ? 'Femenino' : 'Masculino';
             
+        doc.setFontSize(14);
+        doc.text(30, 70, `Nombre: ${nombre}`);
+        doc.text(30, 80, `Edad: ${edad}`);
+        doc.text(30, 90, `Género: ${genero}`);
             
-            // Agregar datos al PDF
-            doc.setFontSize(14);
-            doc.text(30, 70, `Nombre: ${nombre}`);
-            doc.text(30, 80, `Edad: ${edad}`);
-            doc.text(30, 90, `Género: ${genero}`);
+        const fecha = new Date().toLocaleDateString();
+        doc.text(30, 130, `Fecha: ${fecha}`);
+        doc.text(30, 150, "Firma: _________________________");
             
-            // Agregar fecha y firma
-            const fecha = new Date().toLocaleDateString();
-            doc.text(30, 130, `Fecha: ${fecha}`);
-            doc.text(30, 150, "Firma: _________________________");
+        doc.save(`Formulario_Cine_${nombre.replace(' ', '_')}.pdf`);
+        alert('PDF generado con éxito. Se descargará automáticamente.');
+    }
+
+    // Funciones para el blog
+    document.addEventListener('DOMContentLoaded', function() {
+        // Publicar nueva pregunta
+        document.getElementById('preguntaForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Guardar el PDF
-            doc.save(`Formulario_Cine_${nombre.replace(' ', '_')}.pdf`);
+            const nombre = document.getElementById('nombre').value.trim();
+            const pregunta = document.getElementById('pregunta').value.trim();
             
-            // Opcional: Mostrar mensaje de éxito
-            alert('PDF generado con éxito. Se descargará automáticamente.');
-        }
+            if (nombre === '' || pregunta === '') {
+                alert('Por favor completa los campos obligatorios');
+                return;
+            }
+            
+            const blogPosts = document.querySelector('.blog-posts');
+            const newPost = document.createElement('article');
+            newPost.className = 'blog-post unanswered';
+            newPost.innerHTML = `
+                <div class="post-header">
+                    <h4>${pregunta}</h4>
+                    <span class="post-meta">Publicado por: ${nombre} | ${new Date().toLocaleDateString()} | Categoría: ${document.getElementById('categoria').options[document.getElementById('categoria').selectedIndex].text}</span>
+                </div>
+                <div class="post-content">
+                    <p>${pregunta}</p>
+                    <div class="no-answer">Esta pregunta aún no tiene respuesta. ¡Sé el primero en responder!</div>
+                    <div class="respuesta-form" style="display: none;">
+                        <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
+                        <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
+                        <button class="enviar-respuesta">Enviar respuesta</button>
+                    </div>
+                    <button class="responder-btn">Responder</button>
+                </div>
+            `;
+            
+            blogPosts.insertBefore(newPost, blogPosts.firstChild.nextSibling);
+            document.getElementById('preguntaForm').reset();
+            alert('Tu pregunta ha sido publicada. ¡Gracias por participar!');
+            setTimeout(() => {
+                newPost.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        });
+
+        // Delegación de eventos para los botones de responder
+        document.addEventListener('click', function(e) {
+            // Mostrar formulario de respuesta
+            if (e.target.classList.contains('responder-btn')) {
+                const post = e.target.closest('.blog-post');
+                const respuestaForm = post.querySelector('.respuesta-form');
+                respuestaForm.style.display = respuestaForm.style.display === 'block' ? 'none' : 'block';
+                e.target.textContent = respuestaForm.style.display === 'block' ? 'Cancelar' : 'Responder';
+            }
+            
+            // Enviar respuesta
+            if (e.target.classList.contains('enviar-respuesta')) {
+                const post = e.target.closest('.blog-post');
+                const respuestaText = post.querySelector('.respuesta-text').value.trim();
+                const respuestaNombre = post.querySelector('.respuesta-nombre').value.trim();
+                
+                if (respuestaText === '' || respuestaNombre === '') {
+                    alert('Por favor completa todos los campos para responder');
+                    return;
+                }
+                
+                const respuestaDiv = document.createElement('div');
+                respuestaDiv.className = 'post-answer';
+                respuestaDiv.innerHTML = `
+                    <h5>Respuesta:</h5>
+                    <p>${respuestaText}</p>
+                    <span class="answer-meta">Respondido por: ${respuestaNombre} | ${new Date().toLocaleDateString()}</span>
+                `;
+                
+                post.querySelector('.post-content').insertBefore(respuestaDiv, post.querySelector('.respuesta-form'));
+                post.querySelector('.no-answer')?.remove();
+                post.classList.remove('unanswered');
+                post.querySelector('.respuesta-form').style.display = 'none';
+                post.querySelector('.responder-btn').textContent = 'Responder';
+                
+                // Limpiar formulario
+                post.querySelector('.respuesta-text').value = '';
+                post.querySelector('.respuesta-nombre').value = '';
+                
+                alert('¡Gracias por tu respuesta!');
+            }
+        });
+    });
     </script>
 </head>
 <body>
@@ -90,21 +163,25 @@
                 <li><a href="#ayuda">Ayuda</a></li>
                 <li><a href="#frecuentes">Preguntas Frecuentes</a></li>
                 <li><a href="#grupos-ayuda">Grupos de ayuda</a></li>
+                <li><a href="#blog-cine">Blog de Cine</a></li>
                 <li><a href="#cuestionario">Cuestionario</a></li>
             </ul>
         </section>
 
         <section class="content">
-            <h1 id="frecuentes">Preguntas Frecuentes (FAQ) - Reseñas de Películas Ganadoras del Óscar</h1>
+            <h1 id="frecuentes">Preguntas frecuentes (FAQ) - Reseñas de Películas Ganadoras del Óscar</h1>
+            
+            <div class="faq-section">
+                <h2>Ayuda</h2>
+                <div class="faq-item">
+                    <h3>¿Qué tipo de películas encontrará en esta página?</h3>
+                    <p>Aquí encontrarás reseñas y análisis de películas que han sido galardonadas con al menos un Premio Óscar en alguna categoría, ya sea Mejor Película, Mejor Director, Mejor Actor/Actriz, etc. Nos enfocamos en destacar y analizar el cine premiado por la Academia.</p>
+                </div>
 
-            <div class="faq-item">
-                <h3>¿Qué tipo de películas encontraré en esta página?</h3>
-                <p>Aquí encontrarás reseñas y análisis de películas que han sido galardonadas con al menos un Premio Óscar en alguna categoría, ya sea Mejor Película, Mejor Director, Mejor Actor/Actriz, etc. Nos enfocamos en destacar y analizar el cine premiado por la Academia.</p>
-            </div>
-
-            <div class="faq-item">
-                <h3>¿Las reseñas son solo de las películas que ganaron el Óscar a Mejor Película?</h3>
-                <p>No necesariamente. Si bien las ganadoras a Mejor Película tendrán un lugar destacado, también incluiremos reseñas de otras películas que recibieron premios Óscar importantes en diversas categorías.</p>
+                <div class="faq-item">
+                    <h3>¿Las reseñas son solo de las películas que ganaron el Óscar a Mejor Película?</h3>
+                    <p>No necesariamente. Si bien las ganadoras a Mejor Película tendrán un lugar destacado, también incluiremos reseñas de otras películas que recibieron premios Óscar importantes en diversas categorías.</p>
+                </div>
             </div>
 
             <h2 id="grupos-ayuda">Grupos de Ayuda y Recursos sobre Reseñas de Películas</h2>
@@ -123,11 +200,85 @@
                 <li><a href="https://www.reddit.com/r/flicks/" target="_blank">Reddit (r/flicks)</a></li>
             </ul>
 
+            <section id="blog-cine" class="blog-container">
+                <h2>Blog de Preguntas y Respuestas</h2>
+                
+                <div class="blog-post-form">
+                    <h3>Haz tu pregunta</h3>
+                    <form id="preguntaForm">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                        
+                        <label for="email">Email (opcional):</label>
+                        <input type="email" id="email" name="email">
+                        
+                        <label for="pregunta">Tu pregunta:</label>
+                        <textarea id="pregunta" name="pregunta" rows="4" required></textarea>
+                        
+                        <label for="categoria">Categoría:</label>
+                        <select id="categoria" name="categoria">
+                            <option value="general">General</option>
+                            <option value="peliculas">Películas específicas</option>
+                            <option value="premios">Premios Óscar</option>
+                            <option value="tecnica">Aspectos técnicos</option>
+                            <option value="historia">Historia del cine</option>
+                        </select>
+                        
+                        <button type="submit">Publicar pregunta</button>
+                    </form>
+                </div>
+                
+                <div class="blog-posts">
+                    <h3>Últimas preguntas</h3>
+                    
+                    <article class="blog-post">
+                        <div class="post-header">
+                            <h4>¿Cuál fue la primera película en ganar el Óscar a Mejor Película?</h4>
+                            <span class="post-meta">Publicado por: Carlos M. | 15 Mayo 2025 | Categoría: Historia del cine</span>
+                        </div>
+                        <div class="post-content">
+                            <p>Estoy investigando sobre los inicios de los Premios Óscar y me gustaría saber cuál fue la primera película galardonada.</p>
+                            
+                            <div class="post-answer">
+                                <h5>Respuesta:</h5>
+                                <p>La primera película en ganar el Óscar a Mejor Película fue "Wings" (Alas), en la primera ceremonia de los Premios de la Academia en 1929. Curiosamente, en esa primera edición hubo dos premios principales: "Mejor Película" (que ganó "Wings") y "Mejor Producción Artística" (que ganó "Amanecer").</p>
+                                <span class="answer-meta">Respondido por: Equipo de CineÓscar | 16 Mayo 2025</span>
+                            </div>
+                            
+                            <div class="respuesta-form" style="display: none;">
+                                <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
+                                <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
+                                <button class="enviar-respuesta">Enviar respuesta</button>
+                            </div>
+                            <button class="responder-btn">Responder</button>
+                        </div>
+                    </article>
+                    
+                    <article class="blog-post unanswered">
+                        <div class="post-header">
+                            <h4>¿Por qué "Citizen Kane" no ganó el Óscar a Mejor Película?</h4>
+                            <span class="post-meta">Publicado por: Luis G. | 8 Mayo 2025 | Categoría: Historia del cine</span>
+                        </div>
+                        <div class="post-content">
+                            <p>Considerada por muchos como la mejor película de la historia, ¿por qué no ganó el premio principal?</p>
+                            <div class="no-answer">Esta pregunta aún no tiene respuesta. ¡Sé el primero en responder!</div>
+                            
+                            <div class="respuesta-form" style="display: none;">
+                                <textarea class="respuesta-text" placeholder="Escribe tu respuesta aquí..." rows="3"></textarea>
+                                <input type="text" class="respuesta-nombre" placeholder="Tu nombre">
+                                <button class="enviar-respuesta">Enviar respuesta</button>
+                            </div>
+                            <button class="responder-btn">Responder</button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
             <section id="cuestionario" class="cuestionario-container">
                 <h2>Cuestionario</h2>
                 <fieldset>
                     <h1>Formulario de conocimientos Previos</h1>
-                    <form name="formulario" onsubmit="return false"> <!-- Eliminado el onsubmit original -->
+                    <form name="formulario" onsubmit="return false">
                         <label for="user"> Nombre</label>
                         <input type="text" name="user" id="user" required> <br/> <br/>
 
@@ -208,6 +359,33 @@
             </section>
         </section>
     </main>
-    <footer class="content-section"><h2>Página web desarrollada para la materia de Programación Web 1. Primavera 2025. Universidad Politécnica de San Luis Potosí</h2></footer>
+
+    <footer class="content-section">
+        <h2>Página web desarrollada para la materia de Programación Web 1. Primavera 2025. Universidad Politécnica de San Luis Potosí</h2>
+    </footer>
+
+    <!-- Chatbot Container -->
+    <div id="landbot-chatbot" class="landbot-chatbot-container"></div>
+
+    <script>
+    window.addEventListener('mouseover', initLandbot, { once: true });
+    window.addEventListener('touchstart', initLandbot, { once: true });
+    var myLandbot;
+    function initLandbot() {
+      if (!myLandbot) {
+        var s = document.createElement('script');
+        s.type = "module"
+        s.async = true;
+        s.addEventListener('load', function() {
+          var myLandbot = new Landbot.Livechat({
+            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2925210-TQLNPHY7HFQPJMTD/index.json',
+          });
+        });
+        s.src = 'https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+      }
+    }
+    </script>
 </body>
 </html>

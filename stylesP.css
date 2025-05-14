@@ -13,7 +13,6 @@ header {
     padding: 15px 20px;
     width: 100%;
     box-sizing: border-box;
-  
     top: 0;
     z-index: 100;
 }
@@ -63,10 +62,48 @@ nav button:hover {
     text-align: center;
 }
 
+/* Estilo mejorado para el título principal */
 .hero-content h1 {
-    font-size: 2em;
+    font-size: 3em;
     margin-bottom: 15px;
     color: #efb810;
+    text-shadow: 
+        0 0 10px rgba(239, 184, 16, 0.7),
+        0 0 20px rgba(239, 184, 16, 0.5),
+        0 0 30px rgba(239, 184, 16, 0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.hero-content h1::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #efb810, transparent);
+    border-radius: 50%;
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 
+            0 0 5px rgba(239, 184, 16, 0.7),
+            0 0 10px rgba(239, 184, 16, 0.5),
+            0 0 15px rgba(239, 184, 16, 0.3);
+    }
+    to {
+        text-shadow: 
+            0 0 10px rgba(239, 184, 16, 0.9),
+            0 0 20px rgba(239, 184, 16, 0.7),
+            0 0 30px rgba(239, 184, 16, 0.5),
+            0 0 40px rgba(239, 184, 16, 0.3);
+    }
 }
 
 .hero-content p {
@@ -161,8 +198,6 @@ li {
     src: url(Fuentes/Sanchez-Regular.ttf);
 }
 
-
-
 @media (max-width: 600px) {
     nav {
         flex-direction: column;
@@ -182,7 +217,15 @@ li {
     }
     
     .hero-content h1 {
-        font-size: 1.5em;
+        font-size: 2em;
+        text-shadow: 
+            0 0 5px rgba(239, 184, 16, 0.7),
+            0 0 10px rgba(239, 184, 16, 0.5);
+    }
+    
+    .hero-content h1::after {
+        height: 2px;
+        bottom: -5px;
     }
     
     .hero-content p {
@@ -209,7 +252,7 @@ li {
 
 @media (max-width: 400px) {
     .hero-content h1 {
-        font-size: 1.3em;
+        font-size: 1.8em;
     }
     
     .hero-image {

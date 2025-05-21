@@ -64,7 +64,7 @@ nav button:hover {
 
 .sidebar h2 {
     margin-top: 0;
-    color: #eee;
+    color: #efb810;
     margin-bottom: 1em;
 }
 
@@ -107,7 +107,7 @@ nav button:hover {
 }
 
 .content h1 {
-    color: #eee;
+    color: #efb810;
     margin-top: 0;
     margin-bottom: 1.5em;
 }
@@ -123,7 +123,7 @@ nav button:hover {
 }
 
 .faq-item h3 {
-    color: #00bcd4;
+    color: #efb810;
     margin-top: 0;
     margin-bottom: 0.5em;
 }
@@ -147,7 +147,7 @@ nav button:hover {
 
 /* Estilos para la sección "Grupos de Ayuda" */
 .content h2#grupos-ayuda {
-    color: #00bcd4;
+    color: #efb810;
     margin-top: 2em;
     margin-bottom: 1em;
     border-bottom: 1px solid #444;

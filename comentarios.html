@@ -61,10 +61,8 @@
 
     // Funciones para el blog con almacenamiento en localStorage
     document.addEventListener('DOMContentLoaded', function() {
-        // Cargar preguntas existentes al iniciar
         cargarPreguntas();
         
-        // Publicar nueva pregunta
         document.getElementById('preguntaForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -91,17 +89,14 @@
                 respondida: false
             };
             
-            // Guardar en localStorage
             guardarPregunta(nuevaPregunta);
-            
-            // Mostrar en la página
+          
             mostrarPregunta(nuevaPregunta);
             
             document.getElementById('preguntaForm').reset();
             alert('Tu pregunta ha sido publicada. ¡Gracias por participar!');
         });
 
-        // Delegación de eventos para los botones de responder
         document.addEventListener('click', function(e) {
             // Mostrar formulario de respuesta
             if (e.target.classList.contains('responder-btn')) {
@@ -110,8 +105,7 @@
                 respuestaForm.style.display = respuestaForm.style.display === 'block' ? 'none' : 'block';
                 e.target.textContent = respuestaForm.style.display === 'block' ? 'Cancelar' : 'Responder';
             }
-            
-            // Enviar respuesta
+        
             if (e.target.classList.contains('enviar-respuesta')) {
                 const post = e.target.closest('.blog-post');
                 const respuestaText = post.querySelector('.respuesta-text').value.trim();
@@ -129,10 +123,8 @@
                     fecha: new Date().toLocaleDateString()
                 };
                 
-                // Guardar respuesta en localStorage
                 guardarRespuesta(preguntaId, nuevaRespuesta);
                 
-                // Actualizar visualización
                 const respuestaDiv = document.createElement('div');
                 respuestaDiv.className = 'post-answer';
                 respuestaDiv.innerHTML = `
@@ -155,7 +147,6 @@
             }
         });
         
-        // Función para cargar preguntas al iniciar
         function cargarPreguntas() {
             const preguntas = JSON.parse(localStorage.getItem('blogPreguntas')) || [];
             preguntas.forEach(pregunta => {
@@ -163,7 +154,6 @@
             });
         }
         
-        // Función para mostrar una pregunta en la página
         function mostrarPregunta(pregunta) {
             const blogPosts = document.querySelector('.blog-posts');
             const newPost = document.createElement('article');
@@ -199,10 +189,9 @@
             }, 100);
         }
         
-        // Función para guardar una nueva pregunta
         function guardarPregunta(pregunta) {
             const preguntas = JSON.parse(localStorage.getItem('blogPreguntas')) || [];
-            preguntas.unshift(pregunta); // Agregar al inicio
+            preguntas.unshift(pregunta); 
             localStorage.setItem('blogPreguntas', JSON.stringify(preguntas));
         }
         

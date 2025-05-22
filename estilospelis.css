@@ -126,32 +126,32 @@ nav a {
 /*Peliculas 2019*/
 .movie-title1_2019 { background-image: url('img/pelis1_2019.png'); }
 .movie-title2_2019 { background-image: url('img/pelis2_2019.png'); }
-.movie-title3_2019 { background-image: url('img/pelis3_2019.png'); }
+
 
 /*Peliculas 2020*/
 .movie-title1_2020 { background-image: url('img/pelis1_2020.png'); }
 .movie-title2_2020 { background-image: url('img/pelis2_2020.png'); }
-.movie-title3_2020 { background-image: url('img/pelis3_2020.png'); }
+
 
 /*Peliculas 2021*/
 .movie-title1_2021 { background-image: url('img/pelis1_2021.jpg'); }
 .movie-title2_2021 { background-image: url('img/pelis2_2021.jpg'); }
-.movie-title3_2021 { background-image: url('img/pelis3_2021.jpg'); }
+
 
 /*Peliculas 2022*/
 .movie-title1_2022 { background-image: url('img/pelis1_2022.jpeg'); }
 .movie-title2_2022 { background-image: url('img/pelis2_2022.jpg'); }
-.movie-title3_2022 { background-image: url('img/pelis3_2022.jpg'); }
+
 
 /*Peliculas 2023*/
 .movie-title1_2023 { background-image: url('img/pelis1_2023.jpg'); }
 .movie-title2_2023 { background-image: url('img/pelis2_2023.jpg'); }
-.movie-title3_2023 { background-image: url('img/pelis3_2023.jpg'); }
+
 
 /*Peliculas 2024*/
 .movie-title1_2024 { background-image: url('img/pelis1_2024.jpeg'); }
 .movie-title2_2024 { background-image: url('img/pelis2_2024.jpg'); }
-.movie-title3_2024 { background-image: url('img/pelis3_2024.jpg'); }
+
 
 .movie-text p {
     margin: 5px 0;
